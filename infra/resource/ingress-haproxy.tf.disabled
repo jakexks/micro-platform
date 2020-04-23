@@ -8,7 +8,7 @@ locals {
 resource "kubernetes_service_account" "haproxy" {
   metadata {
     name      = "haproxy-ingress"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels    = local.ingress_haproxy_labels
   }
 }
@@ -63,14 +63,14 @@ resource "kubernetes_cluster_role_binding" "haproxy" {
   subject {
     kind      = "ServiceAccount"
     name      = kubernetes_service_account.haproxy.metadata.0.name
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
   }
 }
 
 resource "kubernetes_config_map" "haproxy" {
   metadata {
     name      = "haproxy-ingress"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels    = local.ingress_haproxy_labels
   }
 }
@@ -78,7 +78,7 @@ resource "kubernetes_config_map" "haproxy" {
 resource "kubernetes_deployment" "haproxy_default_backend" {
   metadata {
     name      = "haproxy-default-backend"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels    = merge(local.ingress_haproxy_labels, { "app.kubernetes.io/name" = "default-backend" })
   }
   spec {
@@ -108,7 +108,7 @@ resource "kubernetes_deployment" "haproxy_default_backend" {
 resource "kubernetes_service" "haproxy_default_backend" {
   metadata {
     name = "haproxy-default-backend"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels = merge(local.ingress_haproxy_labels, { "app.kubernetes.io/name" = "default-backend" })
   }
   spec {
@@ -125,7 +125,7 @@ resource "kubernetes_service" "haproxy_default_backend" {
 resource "kubernetes_deployment" "haproxy_ingress" {
   metadata {
     name = "haproxy-ingress"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels = local.ingress_haproxy_labels
   }
   spec {
@@ -144,7 +144,7 @@ resource "kubernetes_deployment" "haproxy_ingress" {
           image = "haproxytech/kubernetes-ingress"
           args = [
             "--configmap=${kubernetes_config_map.haproxy.id}",
-            "--default-backend-service=${data.terraform_remote_state.namespaces.outputs.resource_namespace}/${kubernetes_service.haproxy_default_backend.metadata.0.name}",
+            "--default-backend-service=${kubernetes_namespace.resource_namespace.id}/${kubernetes_service.haproxy_default_backend.metadata.0.name}",
             "--publish-service=${kubernetes_service.haproxy_ingress.id}",
           ]
           env {
@@ -190,7 +190,7 @@ resource "kubernetes_deployment" "haproxy_ingress" {
 resource "kubernetes_service" "haproxy_ingress" {
   metadata {
     name = "haproxy-ingress"
-    namespace = data.terraform_remote_state.namespaces.outputs.resource_namespace
+    namespace = kubernetes_namespace.resource_namespace.id
     labels = local.ingress_haproxy_labels
   }
   spec {

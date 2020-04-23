@@ -1,13 +1,3 @@
-resource "kubernetes_namespace" "control" {
-  metadata {
-    name = var.control_namespace
-  }
-}
-
-output "control_namespace" {
-  value = kubernetes_namespace.control.id
-}
-
 resource "kubernetes_namespace" "network" {
   metadata {
     name = var.network_namespace

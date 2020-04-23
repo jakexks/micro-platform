@@ -96,8 +96,8 @@ func init() {
 	kubeCommand.AddCommand(kubeCreateCommand)
 	kubeCommand.AddCommand(kubeDestroyCommand)
 	kubeCommand.AddCommand(kubeConfigCommand)
-	kubeCommand.PersistentFlags().StringP("name", "n", "microdev", "Cluster name")
-	viper.BindPFlag("cluster-name", kubeCommand.PersistentFlags().Lookup("name"))
-	kubeCommand.PersistentFlags().StringP("region", "r", "westeurope", "Cluster Region")
-	viper.BindPFlag("cluster-region", kubeCommand.PersistentFlags().Lookup("region"))
+	rootCmd.PersistentFlags().StringP("name", "n", "microdev", "Environment name")
+	viper.BindPFlag("cluster-name", rootCmd.PersistentFlags().Lookup("name"))
+	rootCmd.PersistentFlags().StringP("region", "r", "westeurope", "Environment Region")
+	viper.BindPFlag("cluster-region", rootCmd.PersistentFlags().Lookup("region"))
 }

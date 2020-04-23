@@ -7,8 +7,3 @@ variable "network_namespace" {
   description = "Namespace to deploy network"
   type        = string
 }
-
-variable "control_namespace" {
-  description = "Namespace to deploy control place"
-  type        = string
-}

@@ -1,3 +1,8 @@
+variable "resource_namespace" {
+  description = "Namespace name to create"
+  type        = string
+}
+
 variable "image_pull_policy" {
   description = "Kubernetes image pull policy for control plane deployments"
   default     = "Always"
@@ -56,4 +61,5 @@ variable "nginx_ingress_image" {
 variable "in_aws" {
   description = "Are you deploying into an AWS Snowflake env?"
   type        = bool
+  default     = false
 }
