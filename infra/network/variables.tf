@@ -17,4 +17,5 @@ variable "micro_image" {
 
 variable "cloudflare_api_token" {
   type = string
+  default = "F0oBV9McQef3OcnnltMe9xpzk6ebcBUz6EZq9YGS"
 }

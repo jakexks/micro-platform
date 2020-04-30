@@ -13,7 +13,7 @@ variable "region" {
 variable "vm_size" {
   type        = string
   description = "Azure VM size"
-  default     = "Standard_A2_v2"
+  default     = "Standard_A4_v2"
 }
 
 variable "instance_count" {

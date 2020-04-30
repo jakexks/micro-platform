@@ -17,7 +17,7 @@ locals {
     "MICRO_REGISTRY"         = "etcd"
     "MICRO_REGISTRY_ADDRESS" = "etcd-cluster.${var.resource_namespace}.svc"
     "MICRO_STORE"            = "cockroach"
-    "MICRO_STORE_ADDRESS"    = "postgres://root@cockroachdb-public:26257/?sslmode=disable"
+    "MICRO_STORE_ADDRESS"    = "postgres://root@cockroachdb-public.${var.resource_namespace}.svc:26257/?sslmode=disable"
   }
 }
 
